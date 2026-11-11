@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Human Body Digital Twin</title>
+<meta name="description" content="AI-powered Human Body Digital Twin - real-time 3D health monitoring">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== AUTH ===================== -->
+<section id="auth" class="auth">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="auth-hero">
+    <div class="brand"><span class="logo">🫀</span><span>Digital<b>Twin</b></span></div>
+    <h1>Your body,<br><span class="grad">digitally alive.</span></h1>
+    <p>An AI-powered 3D replica of the human body that monitors heart rate, blood pressure, oxygen level and more in real time — and turns the data into personal health insights.</p>
+    <ul class="feat">
+      <li><i>🧬</i><div><b>Interactive 3D body</b><span>Rotate, zoom and tap organs</span></div></li>
+      <li><i>📡</i><div><b>Real-time vitals</b><span>Live IoT sensor stream (simulated)</span></div></li>
+      <li><i>🤖</i><div><b>AI health analysis</b><span>Anomaly detection and risk score</span></div></li>
+    </ul>
+    <div class="college">Kommuri Pratap Reddy Institute of Technology · Dept. of CSE</div>
+  </div>
+  <div class="auth-card glass">
+    <div class="tabs"><button id="tabLogin" class="active">Sign in</button><button id="tabRegister">Create account</button></div>
+    <form id="loginForm" autocomplete="on">
+      <h2>Welcome back</h2><p class="sub">Sign in to open your digital twin.</p>
+      <label>Email<input id="lEmail" type="email" placeholder="you@example.com" required autocomplete="email"></label>
+      <label>Password<div class="pw"><input id="lPass" type="password" placeholder="••••••••" required autocomplete="current-password"><button type="button" class="eye" data-t="lPass">👁</button></div></label>
+      <div class="err" id="lErr"></div>
+      <button class="btn primary" id="lBtn" type="submit">Sign in</button>
+      <button class="btn ghost" id="demoBtn" type="button">⚡ Try demo account</button>
+    </form>
+    <form id="regForm" class="hidden" autocomplete="on">
+      <h2>Create your account</h2><p class="sub">Takes less than a minute.</p>
+      <label>Full name<input id="rName" type="text" placeholder="Your name" required autocomplete="name"></label>
+      <label>Email<input id="rEmail" type="email" placeholder="you@example.com" required autocomplete="email"></label>
+      <label>Password<div class="pw"><input id="rPass" type="password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password"><button type="button" class="eye" data-t="rPass">👁</button></div></label>
+      <div class="err" id="rErr"></div>
+      <button class="btn primary" id="rBtn" type="submit">Create account</button>
+    </form>
+    <p class="note">Demo login: <code>demo@twin.com</code> / <code>Demo@123</code></p>
+  </div>
+</section>
+
+<!-- ===================== APP ===================== -->
+<div id="app" class="app hidden">
+  <aside class="side" id="side">
+    <div class="brand"><span class="logo">🫀</span><span>Digital<b>Twin</b></span></div>
+    <nav>
+      <button class="nav active" data-view="dash"><i>🏠</i>Dashboard</button>
+      <button class="nav" data-view="analytics"><i>📈</i>Analytics</button>
+      <button class="nav" data-view="profile"><i>👤</i>Profile</button>
+    </nav>
+    <div class="side-foot">
+      <div class="live"><span class="dot"></span> Live sensor stream</div>
+      <button class="nav" id="logout"><i>🚪</i>Log out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <button class="burger" id="burger">☰</button>
+      <div><h3 id="hello">Hello</h3><span class="muted">Real-time health monitoring · simulated IoT data</span></div>
+      <div class="scn">
+        <span class="muted">Scenario</span>
+        <button class="chip active" data-s="normal">Normal</button>
+        <button class="chip" data-s="stress">Stress</button>
+        <button class="chip" data-s="hypoxia">Low O₂</button>
+        <button class="chip" data-s="fever">Fever</button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section id="v-dash" class="view">
+      <div class="grid-main">
+        <div class="card viewer-card">
+          <div class="card-h"><b>3D Digital Twin</b><span class="muted">Drag to rotate · scroll to zoom · tap an organ</span></div>
+          <div id="viewer"></div>
+          <div class="legend"><span><i class="lg ok"></i>Normal</span><span><i class="lg warn"></i>Warning</span><span><i class="lg crit"></i>Critical</span></div>
+          <div class="organ-box" id="organBox"><b>Select an organ</b><span class="muted">Tap the heart, lungs, brain, liver, stomach or kidneys.</span></div>
+        </div>
+        <div class="col">
+          <div class="card risk-card">
+            <div class="card-h"><b>AI Health Risk Score</b><span class="pill" id="riskPill">–</span></div>
+            <div class="gauge-wrap">
+              <svg viewBox="0 0 120 120" class="gauge"><circle cx="60" cy="60" r="50" class="g-bg"/><circle cx="60" cy="60" r="50" class="g-fg" id="gFg"/></svg>
+              <div class="g-val"><b id="riskVal">0</b><span>/ 100</span></div>
+            </div>
+            <div class="muted center" id="bmiLine"></div>
+          </div>
+          <div class="card">
+            <div class="card-h"><b>AI Insights</b><span class="muted">auto-generated</span></div>
+            <div id="insights" class="insights"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vitals" id="vitals"></div>
+
+      <div class="card">
+        <div class="card-h"><b id="chartTitle">Heart Rate</b><span class="muted">last ~80 seconds</span></div>
+        <canvas id="mainChart" height="260"></canvas>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="v-analytics" class="view hidden">
+      <div class="charts" id="charts"></div>
+      <div class="two">
+        <div class="card"><div class="card-h"><b>Recommendations</b></div><ul id="recs" class="recs"></ul></div>
+        <div class="card"><div class="card-h"><b>Model details</b></div><div id="modelInfo" class="muted"></div>
+          <div class="modules">
+            <span>User &amp; Profile</span><span>Data Acquisition</span><span>Data Processing</span><span>3D Digital Twin</span><span>AI/ML Analysis</span><span>Health Dashboard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="v-profile" class="view hidden">
+      <div class="card prof">
+        <div class="card-h"><b>Profile &amp; Medical History</b><span class="muted" id="bmiBadge"></span></div>
+        <form id="profForm" class="pgrid">
+          <label>Full name<input id="pName" type="text" required></label>
+          <label>Age<input id="pAge" type="number" min="1" max="120"></label>
+          <label>Sex<select id="pSex"><option>Male</option><option>Female</option><option>Other</option></select></label>
+          <label>Height (cm)<input id="pHeight" type="number" min="50" max="250" step="0.1"></label>
+          <label>Weight (kg)<input id="pWeight" type="number" min="10" max="300" step="0.1"></label>
+          <label>Known conditions<input id="pCond" type="text" placeholder="e.g. none, asthma, diabetes"></label>
+          <label class="full">Notes / medical history<textarea id="pNotes" rows="3"></textarea></label>
+          <div class="full"><button class="btn primary" type="submit">Save profile</button><span class="saved" id="saved"></span></div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

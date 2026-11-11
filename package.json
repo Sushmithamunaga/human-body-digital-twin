@@ -1,0 +1,9 @@
+{
+  "name": "human-body-digital-twin",
+  "version": "1.0.0",
+  "description": "AI-Powered Human Body Digital Twin - full-stack app (Node.js + Three.js)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node server.js" },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

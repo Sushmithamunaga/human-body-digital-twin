@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: human-body-digital-twin
+    runtime: node
+    plan: free
+    buildCommand: echo "no build step"
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
